@@ -1,239 +1,64 @@
-# 🎮 AI-Powered Text Adventure Game
+# Rooman Alumni Network
 
-An interactive text-based adventure game powered by Large Language Models (LLMs) with a modern web interface. This project demonstrates advanced AI concepts including hierarchical content generation, interactive AI applications, content moderation, and game mechanics with tool calling.
+Full-stack alumni network scaffold for Rooman Institute using React + Supabase.
 
-## ✨ Features
+## Stack
+- Frontend: React + Vite + Tailwind CSS
+- Backend: Supabase Auth, Postgres, Storage, Realtime
+- Payments: Razorpay via Supabase Edge Functions
+- Invite delivery: MSG91 / Resend via Edge Function
 
-### 🌟 Core Gameplay
-- **Dynamic Storytelling**: AI-generated narratives that adapt to player choices
-- **Interactive World**: Explore multiple locations with unique descriptions
-- **Inventory System**: Collect items, manage gold, and track experience points
-- **Combat Mechanics**: Engage in battles with various enemies
-- **Character Progression**: Health, gold, XP, and discovery tracking
+## Project Structure
 
-### 🛡️ Safety & Moderation
-- **Content Filtering**: Built-in safety checks for user input and AI output
-- **Prompt Injection Protection**: Sanitization against malicious inputs
-- **Family-Friendly**: Content policies ensuring appropriate gameplay
+- `/src/components` reusable UI building blocks
+- `/src/pages` Landing, Register, Feed, Members, Mentorship, Profile, Admin
+- `/src/hooks` auth/posts/profile/connections data hooks
+- `/src/lib` Supabase and Razorpay helpers
+- `/supabase/migrations` SQL schema + RLS policies
+- `/supabase/functions` edge functions for order creation, payment verify, and invite sending
 
-### 🎨 Modern UI
-- **Gradio Interface**: Clean, responsive web interface
-- **Real-time Status**: Live game state display
-- **Chat-based Interaction**: Natural language commands
-- **Beautiful Themes**: Purple/pink themed design with emojis
+## Run frontend
 
-## 🖼️ Game Screenshots
-
-### Main Game Interface
-![Game Interface](https://raw.githubusercontent.com/afrin2315/game/main/assets/1.png)
-*The main game interface showing the chat-based gameplay, status sidebar, and command input*
-
-### Gameplay Features
-![Game Features](https://raw.githubusercontent.com/afrin2315/game/main/assets/2.png)
-*Demonstrating the inventory system, location exploration, and interactive commands*
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8 or higher
-- Git (optional, for cloning)
-
-### Installation
-
-1. **Clone or Download the Project**
-   ```bash
-   git clone https://github.com/afrin2315/game.git
-   cd game
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Configure API Key (Optional)**
-   - Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey)
-   - Create `.env` file and add: `GEMINI_API_KEY=your_actual_api_key_here`
-   - Without API key, the game runs in demo mode with rich fallback content
-
-4. **Run the Game**
-   ```bash
-   python app.py
-   ```
-
-5. **Open in Browser**
-   - Navigate to `http://127.0.0.1:7860`
-   - The game will auto-start with a welcome message
-
-## 🎮 How to Play
-
-### Basic Commands
-- `look` - Examine your surroundings
-- `explore` - Search the area for items and secrets
-- `go [direction]` - Move (north, south, east, west)
-- `take [item]` - Pick up an item
-- `inventory` - Check your items
-- `talk` - Speak with nearby characters
-- `fight` - Engage in combat
-- `help` - Show all commands
-
-### Advanced Gameplay
-- **Be Descriptive**: Try commands like "look at the door" or "explore the dark cave carefully"
-- **Combine Actions**: "take the glowing sword" or "go north quickly"
-- **Experiment**: The AI responds to creative commands!
-
-### Game World
-- **Mystic Grove**: Starting location with magical trees
-- **Crystal Cavern**: Glowing caves with hidden treasures
-- **Northern Glade**: Ancient stone pillars with runes
-- **Whispering Falls**: Upward-flowing magical waterfall
-- **Ancient Temple**: Mysterious temple with secrets
-
-## 🏗️ Architecture
-
-### Project Structure
-```
-game/
-├── app.py              # Main Gradio web interface
-├── game_engine.py      # Core game logic and mechanics
-├── llm_client.py       # LLM integration with fallback
-├── safety.py           # Content moderation and safety
-├── requirements.txt    # Python dependencies
-├── .env               # API key configuration
-├── assets/            # Game assets and images
-│   ├── 1.png          # Game screenshot 1
-│   └── 2.png          # Game screenshot 2
-└── README.md          # This file
+```bash
+npm install
+npm run dev
 ```
 
-### Key Components
+## Environment
 
-#### `app.py` - Web Interface
-- Gradio-based UI components
-- Event handlers for user interactions
-- Real-time status updates
-- Chat-based gameplay interface
+Copy `.env.example` to `.env` and set values.
 
-#### `game_engine.py` - Game Logic
-- `GameEngine`: Main game controller
-- `GameWorld`: World state and locations
-- `Player`: Character state and inventory
-- Action processing and response generation
-
-#### `llm_client.py` - AI Integration
-- `LLMClient`: Interface to Google Gemini API
-- Rich fallback responses for demo mode
-- Prompt templates for consistent AI behavior
-- JSON parsing for structured data
-
-#### `safety.py` - Content Moderation
-- `ContentModerator`: Input/output filtering
-- `GameContentPolicy`: Game-specific rules
-- Pattern-based content blocking
-- Prompt injection protection
-
-#### `assets/` - Game Assets
-- **1.png**: Game screenshot showing the main interface and gameplay
-- **2.png**: Additional screenshot demonstrating game features and UI
-- Screenshots showcase the modern Gradio interface and interactive gameplay
-
-## 🔧 Configuration
-
-### Environment Variables
-Create a `.env` file with:
-```env
-GEMINI_API_KEY=your_actual_api_key_here
+```bash
+cp .env.example .env
 ```
 
-### Demo Mode
-The game automatically runs in demo mode when:
-- No API key is provided
-- API connection fails
-- Rate limits are exceeded
+Required vars:
 
-Demo mode includes:
-- Pre-written location descriptions
-- Contextual combat responses
-- Item discovery mechanics
-- Movement descriptions
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET` (Edge Function secret)
+- `MSG91_AUTH_KEY`
+- `RESEND_API_KEY`
 
-## 📚 Educational Concepts
+## Supabase setup
 
-This project demonstrates several advanced AI and software development concepts:
+1. Apply migration from `/supabase/migrations`.
+2. Create a storage bucket named `profiles` for avatars.
+3. Deploy edge functions:
+   - `create-razorpay-order`
+   - `verify-payment`
+   - `send-invite`
+4. Add function secrets in Supabase.
 
-| Feature | Technique |
-|---------|-----------|
-| World Generation | Hierarchical Content Generation |
-| Dynamic Stories | Interactive AI Applications |
-| Inventory System | JSON Parsing & Tool Calling |
-| Content Safety | Moderation Guardrails |
-| Fallback System | Robust Error Handling |
-| Modern UI | Gradio Framework |
+## Features implemented
 
-### AI Concepts
-- **LLM Integration**: Using Google Gemini for content generation
-- **Prompt Engineering**: Structured prompts for consistent responses
-- **Fallback Systems**: Graceful degradation when AI is unavailable
-- **Content Safety**: Input/output filtering and moderation
-
-### Software Engineering
-- **Singleton Pattern**: Global game instance management
-- **State Management**: Centralized game state
-- **Modular Design**: Separation of concerns
-- **Error Handling**: Robust error recovery
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**"Gradio theme parameter warning"**
-- ✅ Fixed: Theme moved to `launch()` method
-
-**"Module not found" errors**
-- Run: `pip install -r requirements.txt`
-
-**"API key not working"**
-- Verify key from Google AI Studio
-- Check `.env` file formatting
-- Game will work in demo mode without API key
-
-**"Game not starting"**
-- Check Python version (3.8+)
-- Ensure all dependencies installed
-- Look for error messages in terminal
-
-### Performance Tips
-- Demo mode is faster for testing
-- API mode provides more dynamic content
-- Clear browser cache if UI issues occur
-
-## 🤝 Contributing
-
-### Development Setup
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-### Areas for Enhancement
-- **New Locations**: Add more game areas
-- **Combat System**: Enhanced battle mechanics
-- **Quest System**: Multi-step objectives
-- **Save/Load**: Game persistence
-- **Multiplayer**: Shared world experiences
-
-## 📄 License
-
-This project is provided for educational purposes. Please respect the terms of service of any AI APIs used.
-
-## 🙏 Acknowledgments
-
-- **DeepLearning.AI**: Inspiration from "Building an AI-Powered Game" course
-- **Google**: Gemini API for AI content generation
-- **Gradio**: Excellent web interface framework
-- **Python Community**: Libraries and tools that make this possible
-
----
-
-**🎮 Start your adventure now!** Run `python app.py` and begin exploring the magical world of Aethoria!
+- Invite landing with live profile count
+- 2-step registration with Supabase OTP verify flow
+- Authenticated app shell with Feed, Members, Mentorship, and My Profile tabs
+- Post create/like/comment with realtime refresh and lazy loading
+- Directory search/filter + connect request action
+- Mentor listing + Razorpay booking modal wired to edge functions
+- Profile editing + avatar upload + shareable public profile route
+- Admin CSV invite upload + edge function trigger
+- Supabase SQL schema and baseline RLS policies
